@@ -1,0 +1,10 @@
+import { RequestOptions } from './internal/method.decorator';
+export declare function GET(route: string, options?: RequestOptions): (controllerClass: any, methodName: string, descriptor: PropertyDescriptor) => void;
+export declare function POST(route: string, options?: RequestOptions): (controllerClass: any, methodName: string, descriptor: PropertyDescriptor) => void;
+export declare function PUT(route: string, options?: RequestOptions): (controllerClass: any, methodName: string, descriptor: PropertyDescriptor) => void;
+export declare function DELETE(route: string, options?: RequestOptions): (controllerClass: any, methodName: string, descriptor: PropertyDescriptor) => void;
+export declare function HEAD(route: string, options?: RequestOptions): (controllerClass: any, methodName: string, descriptor: PropertyDescriptor) => void;
+export declare function TRACE(route: string, options?: RequestOptions): (controllerClass: any, methodName: string, descriptor: PropertyDescriptor) => void;
+export declare function OPTIONS(route: string, options?: RequestOptions): (controllerClass: any, methodName: string, descriptor: PropertyDescriptor) => void;
+export declare function CONNECT(route: string, options?: RequestOptions): (controllerClass: any, methodName: string, descriptor: PropertyDescriptor) => void;
+export declare function PATCH(route: string, options?: RequestOptions): (controllerClass: any, methodName: string, descriptor: PropertyDescriptor) => void;

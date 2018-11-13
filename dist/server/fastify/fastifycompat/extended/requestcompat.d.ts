@@ -1,0 +1,36 @@
+import { Application, Response } from 'express';
+import { Options, Ranges, Result } from 'range-parser';
+import { FastifyReq } from '../../../types';
+import { SimpleRequestCompat } from '../simple/simplerequestcompat';
+export declare class RequestCompat extends SimpleRequestCompat {
+    private acceptHeader;
+    private accepted;
+    private protocol;
+    private secure;
+    private ip;
+    private ips;
+    private subdomains;
+    private hostname;
+    private fresh;
+    private stale;
+    private xhr;
+    private cookies;
+    private route;
+    private signedCookies;
+    private originalUrl;
+    private baseUrl;
+    private constructor();
+    static getInstance(fastifyRequest: FastifyReq, app: Application): any;
+    static getProxyInstance(fastifyRequest: FastifyReq, app: Application): any;
+    get(name: string): any | string | string[] | undefined;
+    header(name: string): any | string | string[] | undefined;
+    accepts(...type: any[]): string | string[] | boolean | any;
+    acceptsCharsets(...charset: any[]): string | string[] | boolean | any;
+    acceptsEncodings(...encoding: any[]): string | string[] | boolean | any;
+    acceptsLanguages(...lang: any[]): string | string[] | boolean | any;
+    private initAcceptsHeader;
+    range(size: number, options?: Options | undefined): Result | Ranges | undefined;
+    param(name: string, defaultValue?: any): string;
+    is(type: string | string[]): string | false | null;
+    clearCookie(name: string, options?: any): Response;
+}

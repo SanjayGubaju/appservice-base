@@ -1,0 +1,366 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>appservice-base documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">appservice-base documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Interfaces</li>
+  <li>ValidationFunc</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/validation/validationschema.ts</code>
+        </p>
+
+
+
+        <section>
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#requestcontenttype">requestcontenttype</a>
+                                </li>
+                                <li>
+                                        <a href="#validate">validate</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section>
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="requestcontenttype"></a>
+                                        <span class="name"><b>requestcontenttype</b><a href="#requestcontenttype"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>requestcontenttype:     <code>string[]</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>string[]</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="validate"></a>
+                                        <span class="name"><b>validate</b><a href="#validate"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>validate:     <code>ajv.ValidateFunction</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>ajv.ValidateFunction</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import * as ajv from &#x27;ajv&#x27;;
+
+import { AjvInstance } from &#x27;./ajvinstance&#x27;;
+
+export enum RequestContentType {
+  QUERY &#x3D; &#x27;query&#x27;,
+  PARAMS &#x3D; &#x27;params&#x27;,
+  BODY &#x3D; &#x27;body&#x27;,
+}
+
+export interface ValidationFunc {
+  requestcontenttype: string[];
+  validate: ajv.ValidateFunction;
+}
+
+export class ValidationSchema {
+
+  private ajv: ajv.Ajv;
+
+  // query, params or body
+  private readonly requestContentTypes: string[];
+  private isRequired: boolean &#x3D; false;
+  private fieldName!: string;
+  private format!: string;
+
+  private constructor(name: string) {
+    this.ajv &#x3D; AjvInstance.getInstance();
+    this.fieldName &#x3D; name;
+    this.requestContentTypes &#x3D; [];
+  }
+
+  public static check(name: string): ValidationSchema {
+    return new ValidationSchema(name);
+  }
+
+  public useRequestContent(...requestContentNames: RequestContentType[]): ValidationSchema {
+    for (const requestContentName of requestContentNames) {
+      this.requestContentTypes.push(requestContentName);
+    }
+    this.requestContentTypes.concat([...requestContentNames]);
+    return this;
+  }
+
+  public getValidationFunc(): ValidationFunc {
+    const schema: any &#x3D; {
+      type: &#x27;object&#x27;,
+      properties: {
+
+      },
+    };
+    if (this.isRequired) {
+      schema.required &#x3D; [this.fieldName];
+      schema.properties[this.fieldName] &#x3D; {
+        type: &#x27;string&#x27;,
+        format: this.format,
+      };
+    }
+    return {
+      requestcontenttype: this.requestContentTypes,
+      validate: this.ajv.compile(schema),
+    };
+  }
+
+  public required(): ValidationSchema {
+    this.isRequired &#x3D; true;
+    return this;
+  }
+
+  public isAlpha(): ValidationSchema {
+    this.format &#x3D; &#x27;alpha&#x27;;
+    return this;
+  }
+
+  public isAlphanumeric(): ValidationSchema {
+    this.format &#x3D; &#x27;alphanumeric&#x27;;
+    return this;
+  }
+
+  public isAscii(): ValidationSchema {
+    this.format &#x3D; &#x27;ascii&#x27;;
+    return this;
+  }
+
+  public isBase64(): ValidationSchema {
+    this.format &#x3D; &#x27;base64&#x27;;
+    return this;
+  }
+
+  public isBefore(beforeDate?: string): ValidationSchema {
+    throw(&#x27;Not implemented yet&#x27;);
+  }
+
+  public isBoolean(): ValidationSchema {
+    this.format &#x3D; &#x27;boolean&#x27;;
+    return this;
+  }
+
+  public isDate(): ValidationSchema {
+    this.format &#x3D; &#x27;date&#x27;;
+    return this;
+  }
+
+  public isDecimal(): ValidationSchema {
+    this.format &#x3D; &#x27;decimal&#x27;;
+    return this;
+  }
+
+  public isEmail(): ValidationSchema {
+    this.format &#x3D; &#x27;email&#x27;;
+    return this;
+  }
+
+  public isISO8601(): ValidationSchema {
+    this.format &#x3D; &#x27;date&#x27;;
+    return this;
+  }
+
+  public isJSON(): ValidationSchema {
+    this.format &#x3D; &#x27;json&#x27;;
+    return this;
+  }
+
+  public isNumeric(): ValidationSchema {
+    this.format &#x3D; &#x27;numeric&#x27;;
+    return this;
+  }
+
+  public isUUID(): ValidationSchema {
+    this.format &#x3D; &#x27;uuid&#x27;;
+    return this;
+  }
+
+  public isEmpty(): ValidationSchema {
+    this.format &#x3D; &#x27;empty&#x27;;
+    return this;
+  }
+
+  public isNotEmpty(): ValidationSchema {
+    this.format &#x3D; &#x27;notempty&#x27;;
+    return this;
+  }
+
+  public withMessage(message: string): ValidationSchema {
+    // TODO: add custom message
+    return this;
+  }
+
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'ValidationFunc.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

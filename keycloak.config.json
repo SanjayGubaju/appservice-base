@@ -1,0 +1,11 @@
+{
+  "realm": "default",
+  "auth-server-url": "http://localhost:8080/auth",
+  "ssl-required": "none",
+  "resource": "default-useradmin-client",
+  "credentials": {
+    "secret": "80967550-a076-44f2-b51c-bb12f649c5d4"
+  },
+  "confidential-port": 0,
+  "policy-enforcer": {}
+}

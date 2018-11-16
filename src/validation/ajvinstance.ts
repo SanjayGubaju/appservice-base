@@ -1,4 +1,5 @@
 import * as ajv from 'ajv';
+import * as iban from 'iban';
 
 export class AjvInstance {
 
@@ -11,6 +12,10 @@ export class AjvInstance {
       AjvInstance.init();
     }
     return AjvInstance.ajv;
+  }
+
+  public static addCustomFormat(name: string, format: (value: any) => boolean): void {
+    AjvInstance.ajv.addFormat(name, value => format(value));
   }
 
   private static init(): void {
@@ -27,7 +32,6 @@ export class AjvInstance {
     //   return new Date(input).getTime() < (compare  ? new Date(compare) : new Date()).getTime();
     // }, type: 'string' });
     AjvInstance.ajv.addFormat('boolean', value => ['true', 'false', '1', '0'].includes(value));
-    // tslint:disable-next-line:max-line-length
     AjvInstance.ajv.addFormat('decimal', /[-+]?(?:\d*\.?\d+|\d+\.?\d*)(?:[eE][-+]?\d+)?/);
     // tslint:disable-next-line:max-line-length
     // this.ajv.addFormat('iso8601', { validate: value => /^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(.[0-9]+)?(Z)?$/.test(value), type: 'string' });
@@ -38,6 +42,7 @@ export class AjvInstance {
         .replace(/(?:^|:|,)(?:\s*\[)+/g, '')));
     AjvInstance.ajv.addFormat('numeric', /^[+-]?(\d*[.])?\d+$/);
     AjvInstance.ajv.addFormat('notempty', value => value.trim().length > 0);
+    AjvInstance.ajv.addFormat('iban', value => iban.isValid(value.trim()));
   }
 
 }

@@ -1,6 +1,7 @@
 import * as stringify from 'safe-stable-stringify';
 
 import { NextFunc } from '../../../server/types';
+import { AjvInstance } from '../../../validation/ajvinstance';
 import { RequestContentType, ValidationFunc, ValidationSchema } from '../../../validation/validationschema';
 import { Validation, Validators } from '../../../validation/validators';
 import { ParamDescriptor, ParamType } from '../parameter.decorator';
@@ -94,6 +95,11 @@ export class AjvValidationResolver {
     let valFunc = paramValidation.required ? validationFunc.required() : validationFunc;
     let type: string;
     let msg;
+    if (paramValidation.custom) {
+      msg = message ? message : `Parameter ${name} is not valid`;
+      valFunc = valFunc.isCustom(paramValidation.custom);
+      return valFunc.withMessage(msg);
+    }
     switch (paramValidation.type) {
       case Validators.Alpha:
         type = 'letters only';
@@ -130,6 +136,10 @@ export class AjvValidationResolver {
         type = 'ISO8601';
         valFunc = valFunc.isISO8601();
         break;
+      case Validators.IBAN:
+        type = 'IBAN';
+        valFunc = valFunc.isIBAN();
+        break;
       case Validators.JSON:
         type = 'JSON';
         valFunc = valFunc.isJSON();
@@ -144,7 +154,8 @@ export class AjvValidationResolver {
         msg = message ? message : `Parameter "${name}" must not be empty`;
         return valFunc.isNotEmpty().withMessage(msg);
     }
-    msg = message ? message : `Parameter "${name}" is not from type ${type}`;
+
+    msg = msg ? msg : `Parameter "${name}" is not from type ${type}`;
     return valFunc.withMessage(msg);
   }
 }

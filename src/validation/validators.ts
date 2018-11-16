@@ -43,6 +43,10 @@ export enum Validators {
    */
   Float = 'isFloat',
   /**
+   * Check if the string is a valid IBAN.
+   */
+  IBAN = 'isIBAN',
+  /**
    * Check if the string is a valid [ISO 8601]{@link https://en.wikipedia.org/wiki/ISO_8601} date.
    */
   ISO8601 = 'isISO8601',
@@ -64,4 +68,5 @@ export interface Validation {
   required?: boolean;
   message?: string;
   type?: Validators;
+  custom?: (value: any) => boolean;
 }

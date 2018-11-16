@@ -110,6 +110,11 @@ export class ValidationSchema {
     return this;
   }
 
+  public isIBAN(): ValidationSchema {
+    this.format = 'iban';
+    return this;
+  }
+
   public isISO8601(): ValidationSchema {
     this.format = 'date';
     return this;
@@ -137,6 +142,13 @@ export class ValidationSchema {
 
   public isNotEmpty(): ValidationSchema {
     this.format = 'notempty';
+    return this;
+  }
+
+  public isCustom(format: (value: any) => boolean): ValidationSchema {
+    const name = `custom-${new Date().getTime()}`;
+    AjvInstance.addCustomFormat(name, format);
+    this.format = name;
     return this;
   }
 

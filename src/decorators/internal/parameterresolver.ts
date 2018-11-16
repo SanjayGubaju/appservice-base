@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 
 import { RequestUtil } from '../../util/requestutil';
 import { ParamDescriptor, ParamType, ParameterDecorator } from './parameter.decorator';
-import { debug } from 'winston';
 
 export class ParameterResolver {
 

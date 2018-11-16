@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 import { ValidationChain, check } from 'express-validator/check';
 import { sanitize } from 'express-validator/filter';
+import * as iban from 'iban';
 
 import { Validation, Validators } from '../../../validation/validators';
 import { ParamDescriptor } from '../parameter.decorator';
@@ -36,6 +37,11 @@ export class ExpressValidationResolver {
     let valFunc = paramValidation.required ? validationFunc : validationFunc.optional();
     let type: string;
     let msg;
+    if (paramValidation.custom) {
+      msg = message ? message : `Parameter ${name} is not valid`;
+      valFunc = valFunc.custom(paramValidation.custom);
+      return valFunc.withMessage(msg);
+    }
     switch (paramValidation.type) {
       case Validators.Alpha:
         type = 'letters only';
@@ -70,6 +76,10 @@ export class ExpressValidationResolver {
       case Validators.Float:
         type = 'float';
         valFunc = valFunc.isFloat();
+        break;
+      case Validators.IBAN:
+        type = 'IBAN';
+        valFunc = valFunc.custom(iban.isValid);
         break;
       case Validators.ISO8601:
         type = 'ISO8601';

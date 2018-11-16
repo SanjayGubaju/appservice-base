@@ -35,7 +35,7 @@ export class RequestHandler {
       }
 
       // resolve parameters
-      let parameters: any[] = ['test'];
+      let parameters: any[] = [];
       if (this.controllerClass[ParameterDecorator.PARAMETERMETADATA]) {
         parameters = ParameterResolver.resolveParams(this.request,
                                                      this.response,
@@ -66,6 +66,11 @@ export class RequestHandler {
   }
 
   private sendResponse(status: number, data: any, isError: boolean): void {
+    if (status === 301 || status === 302) {
+      this.response.redirect(status, data);
+      return;
+    }
+
     if (this.type && !this.type.startsWith('application/json')) {
       this.response.status(status).type(this.type).send(DataType.isString(data) ? this.escapeHtml(data, false) : data);
     } else {

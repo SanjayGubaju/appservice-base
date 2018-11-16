@@ -102,8 +102,10 @@ export class SimpleResponseCompat extends AbstractCompatProxy {
 
   public redirect(url: string | number, status?: number | string): void {
     const useUrl: string = typeof url === 'string' ? url : String(status || '');
-    const useStatus: number = typeof url === 'number' ? url : Number(status || 302);
-    this.fastifyResponse.redirect(useStatus, useUrl);
+    const statusCode: number = typeof url === 'number' ? url : Number(status || 302);
+    // does not work currently
+    // this.fastifyResponse.redirect(useStatus, useUrl);
+    this.fastifyResponse.header('location', useUrl).code(statusCode).send('');
   }
 
   public end(callback?: () => void) {

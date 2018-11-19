@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ajv = require("ajv");
+const iban = require("iban");
 class AjvInstance {
     constructor() { }
     static getInstance() {
@@ -8,6 +9,9 @@ class AjvInstance {
             AjvInstance.init();
         }
         return AjvInstance.ajv;
+    }
+    static addCustomFormat(name, format) {
+        AjvInstance.ajv.addFormat(name, value => format(value));
     }
     static init() {
         AjvInstance.ajv = new ajv({ allErrors: true });
@@ -33,6 +37,8 @@ class AjvInstance {
             .replace(/(?:^|:|,)(?:\s*\[)+/g, '')));
         AjvInstance.ajv.addFormat('numeric', /^[+-]?(\d*[.])?\d+$/);
         AjvInstance.ajv.addFormat('notempty', value => value.trim().length > 0);
+        // tslint:disable-next-line:max-line-length
+        AjvInstance.ajv.addFormat('iban', value => iban.isValid(value.trim()));
     }
 }
 exports.AjvInstance = AjvInstance;

@@ -83,6 +83,11 @@ class AjvValidationResolver {
         let valFunc = paramValidation.required ? validationFunc.required() : validationFunc;
         let type;
         let msg;
+        if (paramValidation.custom) {
+            msg = message ? message : `Parameter ${name} is not valid`;
+            valFunc = valFunc.isCustom(paramValidation.custom);
+            return valFunc.withMessage(msg);
+        }
         switch (paramValidation.type) {
             case validators_1.Validators.Alpha:
                 type = 'letters only';
@@ -119,6 +124,10 @@ class AjvValidationResolver {
                 type = 'ISO8601';
                 valFunc = valFunc.isISO8601();
                 break;
+            case validators_1.Validators.IBAN:
+                type = 'IBAN';
+                valFunc = valFunc.isIBAN();
+                break;
             case validators_1.Validators.JSON:
                 type = 'JSON';
                 valFunc = valFunc.isJSON();
@@ -133,7 +142,7 @@ class AjvValidationResolver {
                 msg = message ? message : `Parameter "${name}" must not be empty`;
                 return valFunc.isNotEmpty().withMessage(msg);
         }
-        msg = message ? message : `Parameter "${name}" is not from type ${type}`;
+        msg = msg ? msg : `Parameter "${name}" is not from type ${type}`;
         return valFunc.withMessage(msg);
     }
 }

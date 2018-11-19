@@ -80,6 +80,10 @@ class ValidationSchema {
         this.format = 'email';
         return this;
     }
+    isIBAN() {
+        this.format = 'iban';
+        return this;
+    }
     isISO8601() {
         this.format = 'date';
         return this;
@@ -102,6 +106,12 @@ class ValidationSchema {
     }
     isNotEmpty() {
         this.format = 'notempty';
+        return this;
+    }
+    isCustom(format) {
+        const name = `custom-${new Date().getTime()}`;
+        ajvinstance_1.AjvInstance.addCustomFormat(name, format);
+        this.format = name;
         return this;
     }
     withMessage(message) {

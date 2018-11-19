@@ -30,7 +30,7 @@ class RequestHandler {
                 return this.sendResponse(404, 'Page not found', true);
             }
             // resolve parameters
-            let parameters = ['test'];
+            let parameters = [];
             if (this.controllerClass[parameter_decorator_1.ParameterDecorator.PARAMETERMETADATA]) {
                 parameters = parameterresolver_1.ParameterResolver.resolveParams(this.request, this.response, this.controllerClass, this.methodName);
                 // validate request params and send response if controller method returns a value
@@ -58,6 +58,10 @@ class RequestHandler {
         }
     }
     sendResponse(status, data, isError) {
+        if (status === 301 || status === 302) {
+            this.response.redirect(status, data);
+            return;
+        }
         if (this.type && !this.type.startsWith('application/json')) {
             this.response.status(status).type(this.type).send(datatype_1.DataType.isString(data) ? this.escapeHtml(data, false) : data);
         }

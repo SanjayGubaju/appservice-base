@@ -28,11 +28,13 @@ export declare class ValidationSchema {
     isDate(): ValidationSchema;
     isDecimal(): ValidationSchema;
     isEmail(): ValidationSchema;
+    isIBAN(): ValidationSchema;
     isISO8601(): ValidationSchema;
     isJSON(): ValidationSchema;
     isNumeric(): ValidationSchema;
     isUUID(): ValidationSchema;
     isEmpty(): ValidationSchema;
     isNotEmpty(): ValidationSchema;
+    isCustom(format: (value: any) => boolean): ValidationSchema;
     withMessage(message: string): ValidationSchema;
 }

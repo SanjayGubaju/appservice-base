@@ -127,6 +127,16 @@ exports.Validator_Required = { required: true };
 // tslint:disable-next-line:variable-name
 exports.Validator_UUID = { type: validators_1.Validators.UUID };
 /**
+ * Check if the parameter is empty or is a valid IBAN.
+ */
+// tslint:disable-next-line:variable-name
+exports.Validator_IBAN = { type: validators_1.Validators.IBAN };
+/**
+ * Check if the parameter is not empty and is a valid IBAN.
+ */
+// tslint:disable-next-line:variable-name
+exports.Validator_IBANRequired = { required: true, type: validators_1.Validators.IBAN };
+/**
  * Check if the parameter is not empty and is a UUID.
  */
 // tslint:disable-next-line:variable-name

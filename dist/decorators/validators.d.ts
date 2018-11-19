@@ -102,6 +102,14 @@ export declare const Validator_Required: {
  */
 export declare const Validator_UUID: Validation;
 /**
+ * Check if the parameter is empty or is a valid IBAN.
+ */
+export declare const Validator_IBAN: Validation;
+/**
+ * Check if the parameter is not empty and is a valid IBAN.
+ */
+export declare const Validator_IBANRequired: Validation;
+/**
  * Check if the parameter is not empty and is a UUID.
  */
 export declare const Validator_UUIDRequired: Validation;

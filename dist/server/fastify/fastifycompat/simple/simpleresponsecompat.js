@@ -76,8 +76,11 @@ class SimpleResponseCompat extends abstractcompatproxy_1.AbstractCompatProxy {
     }
     redirect(url, status) {
         const useUrl = typeof url === 'string' ? url : String(status || '');
-        const useStatus = typeof url === 'number' ? url : Number(status || 302);
-        this.fastifyResponse.redirect(useStatus, useUrl);
+        const statusCode = typeof url === 'number' ? url : Number(status || 302);
+        console.log('redirect to %s', useUrl);
+        // does not work currently
+        // this.fastifyResponse.redirect(useStatus, useUrl);
+        this.fastifyResponse.header('location', useUrl).code(statusCode).send('');
     }
     end(callback) {
         if (!this.useProxy && this.statusCode) {

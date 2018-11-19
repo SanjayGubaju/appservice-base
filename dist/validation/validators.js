@@ -46,6 +46,10 @@ var Validators;
      */
     Validators["Float"] = "isFloat";
     /**
+     * Check if the string is a valid IBAN.
+     */
+    Validators["IBAN"] = "isIBAN";
+    /**
      * Check if the string is a valid [ISO 8601]{@link https://en.wikipedia.org/wiki/ISO_8601} date.
      */
     Validators["ISO8601"] = "isISO8601";
